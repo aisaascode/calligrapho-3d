@@ -11,10 +11,13 @@ import Footer from "@/components/Footer";
 import ThreeBackground from "@/components/ThreeBackground";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Index = () => {
+  const isMobile = useIsMobile();
+  
   useEffect(() => {
     // Initialize GSAP animations
     gsap.config({
@@ -49,7 +52,7 @@ const Index = () => {
   }, []);
 
   return (
-    <ThemeProvider defaultTheme="light">
+    <ThemeProvider defaultTheme={isMobile ? "dark" : "light"}>
       <div className="relative min-h-screen">
         <ThreeBackground />
         <Navigation />

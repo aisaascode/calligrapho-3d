@@ -1,6 +1,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { gsap } from "gsap";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Theme = "dark" | "light" | "system";
 
@@ -28,9 +29,22 @@ export function ThemeProvider({
   storageKey = "calligraphy-theme",
   ...props
 }: ThemeProviderProps) {
+  const isMobile = useIsMobile();
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
   );
+
+  useEffect(() => {
+    // Set default theme based on device
+    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
+    if (!storedTheme) {
+      if (isMobile) {
+        setTheme("dark");
+      } else {
+        setTheme(defaultTheme);
+      }
+    }
+  }, [isMobile, defaultTheme, storageKey]);
 
   useEffect(() => {
     const root = window.document.documentElement;

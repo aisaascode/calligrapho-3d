@@ -42,6 +42,24 @@ const works = [
     category: "Art",
     image: "https://images.unsplash.com/photo-1596447594109-2f0b133fee0c?q=80&w=700&auto=format&fit=crop",
   },
+  {
+    id: 7,
+    title: "Elegant Script Lettering",
+    category: "Typography",
+    image: "https://images.unsplash.com/photo-1518558997980-ef1696049d21?q=80&w=700&auto=format&fit=crop",
+  },
+  {
+    id: 8,
+    title: "Hand-drawn Letter Set",
+    category: "Stationery",
+    image: "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=700&auto=format&fit=crop",
+  },
+  {
+    id: 9,
+    title: "Arabic Calligraphy Art",
+    category: "Cultural",
+    image: "https://images.unsplash.com/photo-1596363525341-5ac7ae381b02?q=80&w=700&auto=format&fit=crop",
+  },
 ];
 
 const WorksSection = () => {
@@ -101,23 +119,23 @@ const WorksSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 px-6 bg-secondary/30"
+      className="py-16 md:py-24 px-4 md:px-6 bg-secondary/30"
       id="works"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 md:mb-16">
           <span className="px-3 py-1 text-sm rounded-full border border-primary/30 bg-primary/5 text-primary works-tag">
             Recent Works
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-6 works-title">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-6 works-title">
             Showcasing Our Artistic Journey
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4 works-description">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mt-4 works-description">
             Explore our portfolio of meticulously crafted projects. Each piece represents our dedication to precision and artistic excellence.
           </p>
         </div>
         
-        <div ref={galleryRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={galleryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {works.map((work) => (
             <div key={work.id} className="gallery-item group overflow-hidden rounded-2xl relative">
               <div className="aspect-square overflow-hidden">
@@ -128,9 +146,9 @@ const WorksSection = () => {
                   loading="lazy"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 md:p-6">
                 <span className="text-sm text-primary font-medium">{work.category}</span>
-                <h3 className="text-white text-xl font-bold mt-2">{work.title}</h3>
+                <h3 className="text-white text-lg md:text-xl font-bold mt-2">{work.title}</h3>
               </div>
             </div>
           ))}

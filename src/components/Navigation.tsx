@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "./ThemeToggle";
 import { gsap } from "gsap";
+import { Link } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,32 +47,42 @@ const Navigation = () => {
   return (
     <nav 
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-300 px-6 lg:px-12",
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300 px-4 md:px-6 lg:px-12",
         isScrolled 
           ? "py-3 glass shadow-sm" 
           : "py-6 bg-transparent"
       )}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a 
-          href="#" 
-          className="text-3xl font-calligraphy font-bold text-foreground nav-item"
+        <Link 
+          to="/" 
+          className="text-2xl md:text-3xl font-calligraphy font-bold text-foreground nav-item"
         >
           Calligrapho
-        </a>
+        </Link>
         
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          <a href="#" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Home</a>
+        <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <Link to="/" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Home</Link>
           <a href="#services" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Services</a>
           <a href="#works" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Works</a>
           <a href="#clients" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Clients</a>
           <a href="#pricing" className="font-medium text-foreground hover:text-primary transition-colors nav-item">Pricing</a>
+          <Link to="/auth" className="nav-item">
+            <Button variant="outline" className="rounded-full hover:bg-primary hover:text-primary-foreground">
+              Sign In
+            </Button>
+          </Link>
           <ThemeToggle className="nav-item" />
         </div>
         
         {/* Mobile Navigation Toggle */}
         <div className="flex items-center gap-4 md:hidden">
+          <Link to="/auth">
+            <Button size="sm" variant="outline" className="rounded-full">
+              Sign In
+            </Button>
+          </Link>
           <ThemeToggle />
           <button 
             onClick={toggleMobileMenu}
@@ -98,13 +110,13 @@ const Navigation = () => {
       {mobileMenuOpen && (
         <div className="mobile-menu md:hidden glass mt-3 p-4 rounded-lg">
           <div className="flex flex-col space-y-4">
-            <a 
-              href="#" 
+            <Link 
+              to="/" 
               className="font-medium text-foreground hover:text-primary transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               Home
-            </a>
+            </Link>
             <a 
               href="#services" 
               className="font-medium text-foreground hover:text-primary transition-colors"

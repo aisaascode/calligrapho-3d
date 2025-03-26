@@ -2,6 +2,8 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 const ThreeBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,7 +48,133 @@ const ThreeBackground = () => {
     // Create objects
     const objects: THREE.Mesh[] = [];
     
-    // Create calligraphy-inspired shapes
+    // Create calligraphy-inspired shapes and 3D text
+    const letters = ['A', 'B', 'C', 'Q', 'M', 'Z', 'E', 'F', 'R', 'S'];
+    const calligraphyWords = ['Art', 'Script', 'Elegant', 'Style', 'Beauty'];
+    
+    // Load font for 3D text
+    const fontLoader = new FontLoader();
+    fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
+      // Add 3D letters
+      letters.forEach((letter, index) => {
+        const textGeometry = new TextGeometry(letter, {
+          font: font,
+          size: 1.5,
+          height: 0.2,
+          curveSegments: 12,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5
+        });
+        
+        textGeometry.center();
+        
+        const material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color().setHSL(0.75 + Math.random() * 0.1, 0.7, 0.6),
+          roughness: 0.3,
+          metalness: 0.7,
+        });
+        
+        const textMesh = new THREE.Mesh(textGeometry, material);
+        
+        // Position randomly in 3D space
+        textMesh.position.set(
+          (Math.random() - 0.5) * 40,
+          (Math.random() - 0.5) * 40,
+          (Math.random() - 0.5) * 20
+        );
+        
+        // Random rotation
+        textMesh.rotation.x = Math.random() * Math.PI;
+        textMesh.rotation.y = Math.random() * Math.PI;
+        
+        // Scale down a bit
+        textMesh.scale.set(0.6, 0.6, 0.6);
+        
+        // Add animations with GSAP
+        gsap.to(textMesh.rotation, {
+          x: `+=${Math.PI * 2}`,
+          y: `+=${Math.PI * 2}`,
+          duration: 25 + Math.random() * 30,
+          ease: "none",
+          repeat: -1
+        });
+        
+        gsap.to(textMesh.position, {
+          x: `+=${Math.random() * 3 - 1.5}`,
+          y: `+=${Math.random() * 3 - 1.5}`,
+          z: `+=${Math.random() * 3 - 1.5}`,
+          duration: 15 + Math.random() * 10,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+        
+        scene.add(textMesh);
+        objects.push(textMesh);
+      });
+      
+      // Add calligraphy words
+      calligraphyWords.forEach((word, index) => {
+        const textGeometry = new TextGeometry(word, {
+          font: font,
+          size: 2,
+          height: 0.2,
+          curveSegments: 12,
+          bevelEnabled: true,
+          bevelThickness: 0.03,
+          bevelSize: 0.02,
+          bevelOffset: 0,
+          bevelSegments: 5
+        });
+        
+        textGeometry.center();
+        
+        const material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color().setHSL(0.75 + Math.random() * 0.1, 0.7, 0.6),
+          roughness: 0.3,
+          metalness: 0.7,
+        });
+        
+        const textMesh = new THREE.Mesh(textGeometry, material);
+        
+        // Position deeper in the scene
+        textMesh.position.set(
+          (Math.random() - 0.5) * 40,
+          (Math.random() - 0.5) * 40,
+          (Math.random() - 0.5) * 15 - 10
+        );
+        
+        // Random rotation
+        textMesh.rotation.x = Math.random() * Math.PI;
+        textMesh.rotation.y = Math.random() * Math.PI;
+        
+        // Add animations with GSAP
+        gsap.to(textMesh.rotation, {
+          x: `+=${Math.PI * 2}`,
+          y: `+=${Math.PI * 2}`,
+          duration: 30 + Math.random() * 30,
+          ease: "none",
+          repeat: -1
+        });
+        
+        gsap.to(textMesh.position, {
+          x: `+=${Math.random() * 3 - 1.5}`,
+          y: `+=${Math.random() * 3 - 1.5}`,
+          z: `+=${Math.random() * 3 - 1.5}`,
+          duration: 20 + Math.random() * 10,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true
+        });
+        
+        scene.add(textMesh);
+        objects.push(textMesh);
+      });
+    });
+    
     const createPenShape = (position: THREE.Vector3, color: THREE.Color) => {
       // Create a pen nib-like shape
       const shape = new THREE.Shape();

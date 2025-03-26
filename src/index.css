@@ -135,7 +135,7 @@
   }
 
   .service-card {
-    @apply relative overflow-hidden rounded-2xl border border-border p-6 transition-all duration-300 hover:shadow-lg;
+    @apply relative overflow-hidden rounded-2xl border border-border p-4 md:p-6 transition-all duration-300 hover:shadow-lg;
   }
 
   .service-card:hover {
@@ -143,7 +143,7 @@
   }
 
   .pricing-card {
-    @apply relative overflow-hidden rounded-2xl border border-border p-8 transition-all duration-300;
+    @apply relative overflow-hidden rounded-2xl border border-border p-6 md:p-8 transition-all duration-300;
   }
 
   .pricing-card:hover {
@@ -156,7 +156,7 @@
   }
 
   .testimonial-card {
-    @apply relative overflow-hidden rounded-2xl border border-border bg-background/50 p-6 shadow-sm transition-all duration-300;
+    @apply relative overflow-hidden rounded-2xl border border-border bg-background/50 p-4 md:p-6 shadow-sm transition-all duration-300;
   }
 
   .testimonial-card:hover {
@@ -186,6 +186,33 @@
   
   .scale-in-hover:hover {
     transform: scale(1.05);
+  }
+
+  /* Responsive improvements */
+  @media (max-width: 640px) {
+    .pricing-card {
+      @apply p-4;
+    }
+    
+    .service-card {
+      @apply p-4;
+    }
+    
+    .grid-content span {
+      @apply text-xl;
+    }
+    
+    h1 {
+      @apply text-3xl;
+    }
+    
+    h2 {
+      @apply text-2xl;
+    }
+    
+    p {
+      @apply text-sm;
+    }
   }
 }
 
