@@ -12,13 +12,13 @@ const HeroSection = () => {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Hero animations
+    // Hero entrance animations
     const tl = gsap.timeline();
     
     tl.from(".hero-title", {
       opacity: 0,
       y: 50,
-      duration: 1,
+      duration: 1.2,
       ease: "power3.out"
     })
     .from(".hero-subtitle", {
@@ -26,38 +26,50 @@ const HeroSection = () => {
       y: 30,
       duration: 0.8,
       ease: "power3.out"
-    }, "-=0.6")
+    }, "-=0.8")
     .from(".hero-cta", {
       opacity: 0,
       y: 20,
       stagger: 0.2,
       duration: 0.8,
       ease: "power3.out"
-    }, "-=0.4");
+    }, "-=0.6");
 
-    // Grid animations
+    // Animated grid entrance
     if (gridRef.current) {
       const gridItems = gridRef.current.querySelectorAll('.grid-item');
       
       gsap.from(gridItems, {
         opacity: 0,
-        scale: 0.8,
-        duration: 0.5,
-        stagger: 0.05,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: "top bottom-=100",
-        }
+        scale: 0.5,
+        rotate: -15,
+        duration: 0.8,
+        stagger: {
+          amount: 1,
+          grid: [3, 3],
+          from: "center"
+        },
+        ease: "elastic.out(1, 0.5)",
       });
       
-      // Add hover effect
+      // Add hover animations
       gridItems.forEach(item => {
+        const content = item.querySelector('.grid-content');
+        
         item.addEventListener('mouseenter', () => {
           gsap.to(item, {
-            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-            borderColor: 'rgba(139, 92, 246, 0.5)',
-            duration: 0.3
+            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+            borderColor: 'rgba(139, 92, 246, 0.8)',
+            scale: 1.1,
+            duration: 0.4,
+            ease: "power2.out"
+          });
+          
+          gsap.to(content, {
+            scale: 1.2,
+            rotate: gsap.utils.random(-5, 5),
+            duration: 0.4,
+            ease: "power2.out"
           });
         });
         
@@ -65,9 +77,32 @@ const HeroSection = () => {
           gsap.to(item, {
             backgroundColor: 'transparent',
             borderColor: 'hsl(var(--border))',
-            duration: 0.3
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out"
+          });
+          
+          gsap.to(content, {
+            scale: 1,
+            rotate: 0,
+            duration: 0.4,
+            ease: "power2.out"
           });
         });
+      });
+    }
+
+    // Add parallax effect to title
+    if (sectionRef.current) {
+      gsap.to(".hero-title", {
+        y: -50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true
+        }
       });
     }
 
@@ -79,7 +114,7 @@ const HeroSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="min-h-screen pt-28 pb-16 md:pb-20 px-4 md:px-6 flex flex-col justify-center"
+      className="min-h-screen pt-28 pb-16 md:pb-20 px-4 md:px-6 flex flex-col justify-center parallax-section"
       id="hero"
     >
       <div className="max-w-7xl mx-auto w-full">
@@ -91,7 +126,7 @@ const HeroSection = () => {
               </span>
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight hero-title">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight hero-title stagger-text">
               The Art of <span className="text-primary font-calligraphy">Beautiful</span> Writing
             </h1>
             
@@ -100,7 +135,7 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-wrap gap-3 md:gap-4">
-              <Button size="lg" className="hero-cta rounded-full">
+              <Button size="lg" className="hero-cta rounded-full animate-pulse-slow">
                 Explore Services
               </Button>
               <Button size="lg" variant="outline" className="hero-cta rounded-full">
@@ -119,11 +154,11 @@ const HeroSection = () => {
               {Array.from({ length: 9 }).map((_, index) => (
                 <div 
                   key={index} 
-                  className="grid-item aspect-square"
+                  className="grid-item aspect-square relative overflow-hidden rounded-md border border-border/50 transition-all duration-300"
                   style={{ transitionDelay: `${index * 50}ms` }}
                 >
-                  <div className="grid-content">
-                    <span className="text-white font-calligraphy text-2xl md:text-3xl font-medium">
+                  <div className="grid-content absolute inset-0 flex items-center justify-center">
+                    <span className="text-primary font-calligraphy text-2xl md:text-3xl font-medium">
                       {String.fromCharCode(65 + index)}
                     </span>
                   </div>

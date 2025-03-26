@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
@@ -9,6 +9,7 @@ import ClientsSection from "@/components/ClientsSection";
 import PricingSection from "@/components/PricingSection";
 import Footer from "@/components/Footer";
 import ThreeBackground from "@/components/ThreeBackground";
+import ScrollAnimations from "@/components/ScrollAnimations";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -24,26 +25,20 @@ const Index = () => {
       nullTargetWarn: false,
     });
 
-    // Animate sections when scrolling
-    const sections = document.querySelectorAll("section");
-    
-    sections.forEach((section) => {
-      gsap.fromTo(
-        section,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
+    // Page entrance animation
+    const content = document.querySelector("main");
+    if (content) {
+      gsap.fromTo(content.children, 
+        { opacity: 0, y: 20 },
+        { 
+          opacity: 1, 
+          y: 0, 
           duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            once: true,
-          },
+          stagger: 0.2,
+          ease: "power2.out" 
         }
       );
-    });
+    }
 
     return () => {
       // Clean up ScrollTriggers
@@ -64,6 +59,7 @@ const Index = () => {
           <PricingSection />
         </main>
         <Footer />
+        <ScrollAnimations />
       </div>
     </ThemeProvider>
   );

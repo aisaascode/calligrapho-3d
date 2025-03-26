@@ -83,13 +83,68 @@ const ServicesSection = () => {
       gsap.from(cards, {
         opacity: 0,
         y: 50,
-        stagger: 0.1,
+        stagger: {
+          each: 0.1,
+          grid: [2, 3],
+          from: "center",
+        },
         duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: cardsRef.current,
           start: "top 80%",
         }
+      });
+      
+      // Add hover animations for service cards
+      cards.forEach(card => {
+        const icon = card.querySelector('svg');
+        const title = card.querySelector('h3');
+        
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, {
+            y: -10,
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+            backgroundColor: 'hsl(var(--primary) / 0.05)',
+            borderColor: 'hsl(var(--primary) / 0.2)',
+            duration: 0.3
+          });
+          
+          gsap.to(icon, {
+            rotate: 360,
+            scale: 1.2,
+            fill: 'hsl(var(--primary))',
+            duration: 0.6,
+            ease: "elastic.out(1, 0.5)"
+          });
+          
+          gsap.to(title, {
+            color: 'hsl(var(--primary))',
+            duration: 0.3
+          });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            y: 0,
+            boxShadow: "none",
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+            duration: 0.3
+          });
+          
+          gsap.to(icon, {
+            rotate: 0,
+            scale: 1,
+            fill: 'currentColor',
+            duration: 0.6
+          });
+          
+          gsap.to(title, {
+            color: 'hsl(var(--foreground))',
+            duration: 0.3
+          });
+        });
       });
     }
 
@@ -153,25 +208,28 @@ const ServicesSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 px-6"
+      className="py-16 md:py-24 px-4 md:px-6 overflow-hidden"
       id="services"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <span className="px-3 py-1 text-sm rounded-full border border-primary/30 bg-primary/5 text-primary services-tag">
+        <div className="text-center mb-12 md:mb-16">
+          <span className="px-3 py-1 text-sm rounded-full border border-primary/30 bg-primary/5 text-primary services-tag inline-block">
             Our Services
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-6 services-title">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mt-6 services-title stagger-text">
             Crafting Excellence in Every Letter
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4 services-description">
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto mt-4 services-description">
             We offer a comprehensive range of calligraphy services tailored to your unique needs. From traditional scripts to modern styles, our expertise brings your vision to life.
           </p>
         </div>
         
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 stagger-container">
           {services.map((service) => (
-            <div key={service.id} className="service-card">
+            <div 
+              key={service.id} 
+              className="service-card stagger-item p-6 rounded-xl border border-transparent transition-all duration-300 hover:cursor-pointer"
+            >
               <div className="mb-6">
                 {renderIcon(service.icon)}
               </div>
