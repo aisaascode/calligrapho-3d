@@ -1,13 +1,68 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from "react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import Navigation from "@/components/Navigation";
+import HeroSection from "@/components/HeroSection";
+import ServicesSection from "@/components/ServicesSection";
+import WorksSection from "@/components/WorksSection";
+import ClientsSection from "@/components/ClientsSection";
+import PricingSection from "@/components/PricingSection";
+import Footer from "@/components/Footer";
+import ThreeBackground from "@/components/ThreeBackground";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Index = () => {
+  useEffect(() => {
+    // Initialize GSAP animations
+    gsap.config({
+      nullTargetWarn: false,
+    });
+
+    // Animate sections when scrolling
+    const sections = document.querySelectorAll("section");
+    
+    sections.forEach((section) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            once: true,
+          },
+        }
+      );
+    });
+
+    return () => {
+      // Clean up ScrollTriggers
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <ThemeProvider defaultTheme="light">
+      <div className="relative min-h-screen">
+        <ThreeBackground />
+        <Navigation />
+        <main>
+          <HeroSection />
+          <ServicesSection />
+          <WorksSection />
+          <ClientsSection />
+          <PricingSection />
+        </main>
+        <Footer />
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 
